@@ -4,6 +4,7 @@ import 'package:c_space_web/feature/stop_time/presentation/arguments/client_time
 import 'package:c_space_web/feature/total_pay/presentation/bloc/total_pay_bloc.dart';
 import 'package:c_space_web/injection_container.dart';
 import 'package:c_space_web/router/rout_name.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -87,7 +88,7 @@ class _TotalPayState extends State<TotalPay> {
                                         color: Colors.grey,
                                         borderRadius:
                                             BorderRadius.circular(12)),
-                                    child: Center(child: Text('PayMe')),
+                                    child: CachedNetworkImage(imageUrl: "https://cdn.paycom.uz/documentation_assets/payme_01.svg?target=_blank")
                                   ),
                                   SizedBox(
                                     width: 10,

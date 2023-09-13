@@ -33,8 +33,6 @@ class TotalPayBloc extends Bloc<TotalPayEvent, TotalPayState> {
     DateTime endTime = DateTime.parse(currentDay);
     Duration timeDifference = startTime.difference(endTime);
     int payTime = (((timeDifference.inMinutes).abs() / 60) * 20000).ceil();
-    print('this is pay time');
-    print(payTime);
 
     emit(
       state.copyWith(

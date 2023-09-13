@@ -2,10 +2,14 @@ part of 'client_bloc.dart';
 
 abstract class ClientEvent extends Equatable {}
 
-class SetStartTime extends ClientEvent{
-  final String name;
-  SetStartTime({required this.name});
+class TimerStartEvent extends ClientEvent{
+  TimerStartEvent();
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [];
+}
+
+class TimerPausedEvent extends ClientEvent{
+  @override
+  List<Object?> get props => [];
 
 }

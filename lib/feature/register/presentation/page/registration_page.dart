@@ -1,38 +1,42 @@
-import 'package:c_space_web/feature/login/bloc/login_bloc.dart';
-import 'package:c_space_web/feature/login/mixin/login_mixin.dart';
 import 'package:c_space_web/feature/login/page/widgets/custom_text_field.dart';
+import 'package:c_space_web/feature/register/presentation/bloc/auth_bloc.dart';
+import 'package:c_space_web/feature/register/presentation/mixin/auth_mixin.dart';
 import 'package:c_space_web/router/rout_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegistrationPage extends StatefulWidget {
+  const RegistrationPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegistrationPage> createState() => _RegistrationPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with LoginMixin {
+class _RegistrationPageState extends State<RegistrationPage> with AuthMixin {
   @override
   void initState() {
     initController();
     super.initState();
   }
 
-  bool isEmpty = false;
-
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state.isSuccess) {
-          Navigator.pushReplacementNamed(context, RoutName.main);
+          Navigator.pushNamedAndRemoveUntil(context, RoutName.main, (route) => false,);
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
+      child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           return Scaffold(
-            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              iconTheme: const IconThemeData(
+                color: Colors.black, //change your color here
+              ),
+            ),
             body: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
@@ -62,6 +66,10 @@ class _LoginPageState extends State<LoginPage> with LoginMixin {
                         const SizedBox(
                           height: 40,
                         ),
+                        CustomTextField(
+                          controller: name,
+                          hintText: "Name",
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -78,8 +86,8 @@ class _LoginPageState extends State<LoginPage> with LoginMixin {
                           isVisible: state.isVisible,
                           suffix: GestureDetector(
                             onTap: () {
-                              context.read<LoginBloc>().add(IsPasswordVisible(
-                                  isVisible: state.isVisible));
+                              context.read<AuthBloc>().add(
+                                  PasswordVisible(isVisible: state.isVisible));
                             },
                             child: state.isVisible
                                 ? const Icon(Icons.remove_red_eye)
@@ -93,45 +101,24 @@ class _LoginPageState extends State<LoginPage> with LoginMixin {
               ),
             ),
             bottomNavigationBar: Padding(
-              padding: const EdgeInsets.all(15),
-              child: SafeArea(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      onPressed: () {
-                        context.read<LoginBloc>().add(
-                              SubmitEvent(
-                                  password: password.text, email: email.text),
-                            );
-                      },
-                      child: const Text("Войти"),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, RoutName.auth);
-                      },
-                      child: const Text("Регистрироваться"),
-                    ),
-                  ],
+              padding: const EdgeInsets.all(15.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                 ),
+                onPressed: () {
+                  context.read<AuthBloc>().add(
+                        SubmitButtonEvent(
+                            password: password.text,
+                            email: email.text,
+                            name: name.text),
+                      );
+                },
+                child: const Text("Войти"),
               ),
             ),
           );

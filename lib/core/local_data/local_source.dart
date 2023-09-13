@@ -7,8 +7,8 @@ class LocalSource{
   String key = 'client';
   String timeKey = 'start';
 
-  void setClientName({required String name, required String surname}){
-    preferences.setString(key, '$name $surname');
+  void setClientName({required String name}){
+    preferences.setString(key, name);
   }
   String getClientName(){
     return preferences.getString(key) ?? '';
