@@ -30,18 +30,10 @@ class _SplashPageState extends State<SplashPage> {
       () {
         if (context.mounted) {
           if (sl<LocalSource>().dataExist()) {
-            if(sl<LocalSource>().startTime()){
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                RoutName.stopTime,
-                    (route) => false,
-              );
-            }
-            else{
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                RoutName.main,
-                    (route) => false,
-              );
-            }
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              RoutName.main,
+                  (route) => false,
+            );
           } else {
             Navigator.of(context).pushReplacementNamed(RoutName.login);
           }

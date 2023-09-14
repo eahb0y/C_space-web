@@ -97,6 +97,7 @@ class _RegistrationPageState extends State<RegistrationPage> with AuthMixin {
                       ],
                     ),
                   ),
+                  Text(state.error ?? '')
                 ],
               ),
             ),

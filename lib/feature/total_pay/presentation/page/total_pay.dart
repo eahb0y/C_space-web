@@ -1,19 +1,15 @@
 import 'package:c_space_web/core/functions/base_functions.dart';
 import 'package:c_space_web/core/local_data/local_source.dart';
-import 'package:c_space_web/feature/stop_time/presentation/arguments/client_time_argument.dart';
 import 'package:c_space_web/feature/total_pay/presentation/bloc/total_pay_bloc.dart';
+import 'package:c_space_web/feature/total_pay/presentation/page/widget/payment_methods.dart';
 import 'package:c_space_web/injection_container.dart';
 import 'package:c_space_web/router/rout_name.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TotalPay extends StatefulWidget {
-  final ClientGetTimeArguments? arguments;
-
   const TotalPay({
     super.key,
-    required this.arguments,
   });
 
   @override
@@ -24,26 +20,76 @@ class _TotalPayState extends State<TotalPay> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TotalPayBloc, TotalPayState>(builder: (context, state) {
-      print(state.totalTime);
       return Scaffold(
+        appBar: AppBar(
+          title: const Text("Общий"),
+          centerTitle: true,
+          backgroundColor: Colors.purple,
+        ),
         body: Center(
           child: state.isLoading
               ? const CircularProgressIndicator()
-              : Center(
+              : Padding(
+                  padding: const EdgeInsets.only(top: 25, left: 30, right: 30),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Общая сумма'),
-                      Text(
-                          '${Functions.moneyFormatNoSum(state.totalPay ?? 0)} sum'),
-                      Text('${state.totalTime}'),
-                      const SizedBox(
-                        height: 20,
-                      ),
                       Column(
                         children: [
-                          Text('Методы оплат'),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'Общая сумма : ',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey.shade700),
+                              ),
+                              Text(
+                                '${Functions.moneyFormatNoSum(state.totalPay ?? 0)} sum',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                "Время работы : ",
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey.shade700),
+                              ),
+                              Text(
+                                '${state.totalTime} минута',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
+                      const Column(
+                        children: [
+                          Text(
+                            'Методы оплат',
+                            style: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                           SizedBox(
                             height: 16,
                           ),
@@ -52,27 +98,11 @@ class _TotalPayState extends State<TotalPay> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Ink(
-                                    height: 40,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: Center(child: Text('PayMe')),
-                                  ),
+                                  PaymentMethods(text: "PayMe"),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Ink(
-                                    height: 40,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: Center(child: Text('PayMe')),
-                                  )
+                                  PaymentMethods(text: "Uzum"),
                                 ],
                               ),
                               SizedBox(
@@ -81,27 +111,11 @@ class _TotalPayState extends State<TotalPay> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Ink(
-                                    height: 40,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: CachedNetworkImage(imageUrl: "https://cdn.paycom.uz/documentation_assets/payme_01.svg?target=_blank")
-                                  ),
+                                  PaymentMethods(text: "Click"),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Ink(
-                                    height: 40,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: const Center(child: Text('PayMe')),
-                                  )
+                                  PaymentMethods(text: "Anor Bank"),
                                 ],
                               )
                             ],
@@ -112,19 +126,27 @@ class _TotalPayState extends State<TotalPay> {
                   ),
                 ),
         ),
-        bottomSheet: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    RoutName.main,
-                    (route) => false,
-                  );
-                  sl<LocalSource>().removeStart();
-                },
-                child: const Text('Назад')),
-          ],
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(15),
+          child: SafeArea(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RoutName.main,
+                  (route) => false,
+                );
+                sl<LocalSource>().removeStart();
+              },
+              child: const Text("Назад"),
+            ),
+          ),
         ),
       );
     });

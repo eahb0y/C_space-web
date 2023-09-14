@@ -16,35 +16,38 @@ class MainPage extends StatelessWidget {
       create: (context) => ClientBloc(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Hour'),
+          title: Text(clientName, style: const TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.w600
+          ),),
+          centerTitle: true,
+          toolbarHeight: 150,
+          backgroundColor: Colors.purple,
         ),
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(
-              height: 40,
-            ),
-            const Center(
-                child: Text(
+
+            Text(
               'Добро пожаловать',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 40),
-            )),
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 40, color: Colors.purple.shade400),
+            ),
             const SizedBox(
               height: 50,
             ),
-            Expanded(
-              flex: 1,
-              child: Text(clientName),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                children: [
-                  const Text('Начать работу'),
-                  ActionsButton(),
-                ],
-              ),
+            Column(
+              children: [
+                Text('Начать работу', style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                  color: Colors.purple.shade500
+                ),),
+                const ActionsButton(),
+                const SizedBox(
+                  height: 60,
+                ),
+              ],
             ),
           ],
         ),

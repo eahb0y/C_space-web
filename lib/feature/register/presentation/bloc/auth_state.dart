@@ -6,6 +6,7 @@ class AuthState extends Equatable {
   final bool? passwordCorrect;
   final bool? hasName;
   final bool isSuccess;
+  final String? error;
 
   const AuthState({
     required this.isVisible,
@@ -13,6 +14,7 @@ class AuthState extends Equatable {
     this.passwordCorrect,
     this.hasName,
     required this.isSuccess,
+    required this.error,
   });
 
   AuthState copyWith({
@@ -21,14 +23,15 @@ class AuthState extends Equatable {
     bool? passwordCorrect,
     bool? hasName,
     bool? isSuccess,
+    String? error,
   }) {
     return AuthState(
-      isSuccess: isSuccess ?? this.isSuccess,
-      isVisible: isVisible ?? this.isVisible,
-      passwordCorrect: passwordCorrect ?? this.passwordCorrect,
-      hasName: hasName ?? this.hasName,
-      emailCorrect: emailCorrect ?? this.emailCorrect,
-    );
+        isSuccess: isSuccess ?? this.isSuccess,
+        isVisible: isVisible ?? this.isVisible,
+        passwordCorrect: passwordCorrect ?? this.passwordCorrect,
+        hasName: hasName ?? this.hasName,
+        emailCorrect: emailCorrect ?? this.emailCorrect,
+        error: error ?? this.error);
   }
 
   @override
@@ -38,5 +41,6 @@ class AuthState extends Equatable {
         passwordCorrect,
         hasName,
         emailCorrect,
+        error,
       ];
 }

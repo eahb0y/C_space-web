@@ -1,5 +1,5 @@
 import 'package:c_space_web/core/local_data/local_source.dart';
-import 'package:c_space_web/feature/stop_time/presentation/arguments/client_time_argument.dart';
+import 'package:c_space_web/feature/total_pay/presentation/arguments/client_get_time_argument.dart';
 import 'package:c_space_web/injection_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
