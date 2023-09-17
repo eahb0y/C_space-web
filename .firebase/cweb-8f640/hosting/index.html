@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="c space web app(Iskandar)">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="c_space_web">
+  <link rel="apple-touch-icon" href="icons/ic_c_space.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>c_space_web</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = "3934490533";
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+</head>
+<body>
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+
+  <script type="module">
+
+
+
+
+
+<!--  const firebaseConfig = {-->
+<!--    apiKey: "AIzaSyBsgq-XcocjraO2zLwqYsS114m8kdLBlOM",-->
+<!--    authDomain: "c-space-web-467f3.firebaseapp.com",-->
+<!--    projectId: "c-space-web-467f3",-->
+<!--    storageBucket: "c-space-web-467f3.appspot.com",-->
+<!--    messagingSenderId: "118340001664",-->
+<!--    appId: "1:118340001664:web:7caf9b996eb427d1422b65",-->
+<!--    measurementId: "G-LR6C4CSXDZ"-->
+<!--  };-->
+
+<!--const firebaseConfig = {-->
+<!--  apiKey: "AIzaSyAOzZf59N8bARmLBpLcT4Y-7_An7ts3O8s",-->
+<!--  authDomain: "cweb-8f640.firebaseapp.com",-->
+<!--  projectId: "cweb-8f640",-->
+<!--  storageBucket: "cweb-8f640.appspot.com",-->
+<!--  messagingSenderId: "928146380304",-->
+<!--  appId: "1:928146380304:web:3f0746a30acfdc3f155c95",-->
+<!--  measurementId: "G-EFX147RTHH"-->
+<!--};-->
+
+<!--const app = initializeApp(firebaseConfig);-->
+<!--const analytics = getAnalytics(app);-->
+</script>
+
+
+</body>
+</html>
