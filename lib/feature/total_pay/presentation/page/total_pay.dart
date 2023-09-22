@@ -2,6 +2,7 @@ import 'package:c_space_web/core/functions/base_functions.dart';
 import 'package:c_space_web/core/local_data/local_source.dart';
 import 'package:c_space_web/feature/total_pay/presentation/bloc/total_pay_bloc.dart';
 import 'package:c_space_web/feature/total_pay/presentation/page/widget/payment_methods.dart';
+import 'package:c_space_web/feature/total_pay/presentation/page/widget/total_time_row_widget.dart';
 import 'package:c_space_web/injection_container.dart';
 import 'package:c_space_web/router/rout_name.dart';
 import 'package:flutter/material.dart';
@@ -39,42 +40,13 @@ class _TotalPayState extends State<TotalPay> {
                           const SizedBox(
                             height: 25,
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                'Общая сумма : ',
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey.shade700),
-                              ),
-                              Text(
-                                '${Functions.moneyFormatNoSum(state.totalPay ?? 0)} sum',
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
+                          TotalTimeRowWidget(
+                              label: 'Общая сумма : ',
+                              text: '${Functions.moneyFormatNoSum(state.totalPay ?? 0)} sum'),
                           const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Text(
-                                "Время работы : ",
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey.shade700),
-                              ),
-                              Text(
-                                '${state.totalTime} минута',
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
+                          TotalTimeRowWidget(
+                            label: "Время работы : ",
+                            text: '${state.totalTime} минута',
                           ),
                           const SizedBox(
                             height: 20,

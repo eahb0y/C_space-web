@@ -3,6 +3,7 @@ import 'package:c_space_web/feature/total_pay/presentation/arguments/client_get_
 import 'package:c_space_web/injection_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -24,7 +25,8 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
       'name': sl<LocalSource>().getClientName(),
       'date': currentDay,
     });
-    emit(ClientTimerCompleted());
+    sl<LocalSource>().saveDateTime(currentDay);
+    emit(ClientTimerCompleted(dateTime: currentDay));
   }
 
   Future<void> _completedTimer(

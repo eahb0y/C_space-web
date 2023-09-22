@@ -19,12 +19,12 @@ class Rout {
   static Route<dynamic> controller(RouteSettings settings) {
     switch (settings.name) {
       case RoutName.initial:
-        return MaterialPageRoute(builder: (_) => SplashPage());
+        return MaterialPageRoute(builder: (_) => const SplashPage());
       case RoutName.login:
         return MaterialPageRoute(
             builder: (_) => BlocProvider<LoginBloc>(
                   create: (context) => sl<LoginBloc>(),
-                  child: LoginPage(),
+                  child: const LoginPage(),
                 ));
       case RoutName.main:
         return MaterialPageRoute(builder: (_) => MainPage());
@@ -39,7 +39,7 @@ class Rout {
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
                   create: (context) => sl<AuthBloc>(),
-                  child: RegistrationPage(),
+                  child: const RegistrationPage(),
                 ));
       default:
         throw ('The rout does not exist');
