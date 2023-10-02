@@ -1,8 +1,6 @@
 class Constants {
-  static List<String> locationsList = [
-    "Maksim Gorkiy",
-    "Labzak",
-    "Yunusabad",
-    "Elbek",
+  static List<String> paymentType = [
+    "Картой",
+    "Наличные"
   ];
 }

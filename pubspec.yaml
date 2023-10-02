@@ -25,6 +25,8 @@ dependencies:
   web_socket_channel: ^2.4.0
   cached_network_image: ^3.2.3
   firebase_auth: ^4.9.0
+  flutter_svg: ^2.0.7
+  url_launcher: ^6.1.14
 
 
 
@@ -46,6 +48,7 @@ flutter:
   assets:
     - assets/images/
     - assets/animation/
+    - assets/svg/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

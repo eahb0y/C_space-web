@@ -25,3 +25,18 @@ class SubmitButtonEvent extends AuthEvent {
   @override
   List<Object?> get props => [password, email, name];
 }
+
+class EnviableSubmitButton extends AuthEvent {
+  final String name;
+  final String email;
+  final String password;
+
+  EnviableSubmitButton({
+    required this.password,
+    required this.email,
+    required this.name,
+  });
+
+  @override
+  List<Object?> get props => [name, email, password];
+}

@@ -2,45 +2,36 @@ part of 'auth_bloc.dart';
 
 class AuthState extends Equatable {
   final bool isVisible;
-  final bool? emailCorrect;
-  final bool? passwordCorrect;
-  final bool? hasName;
   final bool isSuccess;
-  final String? error;
+  final String? errorStatus;
+  final bool enviable;
+  final bool isLoading;
 
   const AuthState({
     required this.isVisible,
-    this.emailCorrect,
-    this.passwordCorrect,
-    this.hasName,
     required this.isSuccess,
-    required this.error,
+    required this.isLoading,
+    required this.enviable,
+    this.errorStatus,
   });
 
   AuthState copyWith({
     bool? isVisible,
-    bool? emailCorrect,
-    bool? passwordCorrect,
-    bool? hasName,
     bool? isSuccess,
-    String? error,
+    bool? isLoading,
+    bool? enviable,
+    String? errorStatus,
   }) {
     return AuthState(
-        isSuccess: isSuccess ?? this.isSuccess,
-        isVisible: isVisible ?? this.isVisible,
-        passwordCorrect: passwordCorrect ?? this.passwordCorrect,
-        hasName: hasName ?? this.hasName,
-        emailCorrect: emailCorrect ?? this.emailCorrect,
-        error: error ?? this.error);
+      isSuccess: isSuccess ?? this.isSuccess,
+      isVisible: isVisible ?? this.isVisible,
+      enviable: enviable ?? this.enviable,
+      isLoading: isLoading ?? this.isLoading,
+      errorStatus: errorStatus ?? this.errorStatus,
+    );
   }
 
   @override
-  List<Object?> get props => [
-        isSuccess,
-        isVisible,
-        passwordCorrect,
-        hasName,
-        emailCorrect,
-        error,
-      ];
+  List<Object?> get props =>
+      [isSuccess, isVisible, enviable, isLoading, errorStatus];
 }

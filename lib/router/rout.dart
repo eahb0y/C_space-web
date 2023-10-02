@@ -1,3 +1,4 @@
+import 'package:c_space_web/feature/initial_page/presentation/page/initial_page.dart';
 import 'package:c_space_web/feature/login/bloc/login_bloc.dart';
 import 'package:c_space_web/feature/login/page/login_page.dart';
 import 'package:c_space_web/feature/main/presentation/pages/main_page.dart';
@@ -20,6 +21,8 @@ class Rout {
     switch (settings.name) {
       case RoutName.initial:
         return MaterialPageRoute(builder: (_) => const SplashPage());
+      case RoutName.initialPage:
+        return MaterialPageRoute(builder: (_) => const InitialPage());
       case RoutName.login:
         return MaterialPageRoute(
             builder: (_) => BlocProvider<LoginBloc>(

@@ -11,46 +11,70 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc()
-      : super(const AuthState(isVisible: false, isSuccess: false, error: '')) {
+      : super(const AuthState(
+          isVisible: false,
+          isSuccess: false,
+          enviable: false,
+          isLoading: false,
+        )) {
     on<PasswordVisible>(_visiblePassword);
-    on<SubmitButtonEvent>(_isEmailCorrect);
+    on<SubmitButtonEvent>(_submitButton);
+    on<EnviableSubmitButton>(_enviableSubmitButton);
   }
 
   void _visiblePassword(PasswordVisible event, Emitter<AuthState> emit) {
     emit(state.copyWith(isVisible: !event.isVisible));
   }
 
-  Future<void> _isEmailCorrect(
+  void _enviableSubmitButton(
+      EnviableSubmitButton event, Emitter<AuthState> emit) {
+    if (event.name.length > 1 &&
+        RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+            .hasMatch(event.email) &&
+        event.password.length > 3) {
+      emit(state.copyWith(enviable: true));
+    } else {
+      emit(state.copyWith(enviable: false));
+    }
+  }
+
+  Future<void> _submitButton(
       SubmitButtonEvent event, Emitter<AuthState> emit) async {
-    bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
-        .hasMatch(event.email);
-    if (emailValid && event.password.isNotEmpty && event.name.isNotEmpty) {
-      try {
-        await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-          email: event.email,
-          password: event.password,
-        )
-            .then((value) {
-          emit(state.copyWith(isSuccess: true),);
-          sl<LocalSource>().setClientName(name: event.name);
-        });
-        await FirebaseFirestore.instance
-            .collection('email')
-            .doc(event.email)
-            .set({
-          'email' : event.email,
-          'name': event.name,
-        });
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          emit(state.copyWith(isSuccess: false));
-        } else if (e.code == 'email-already-in-use') {
-          emit(state.copyWith(isSuccess: false));
-        }
-      } catch (e) {
-        emit(state.copyWith(error: e.toString()));
+    emit(state.copyWith(isLoading: true));
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+        email: event.email,
+        password: event.password,
+      )
+          .then((value) {
+        emit(state.copyWith(isSuccess: true, isLoading: false));
+        sl<LocalSource>().setClientName(name: event.name);
+      });
+      await FirebaseFirestore.instance
+          .collection('hour')
+          .doc(event.email)
+          .set({
+        'email': event.email,
+        'name': event.name,
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        emit(state.copyWith(
+          isSuccess: false,
+          errorStatus: 'Пароль должен содержать 8 символов',
+          isLoading: false,
+        ));
+      } else if (e.code == 'email-already-in-use') {
+        emit(state.copyWith(
+          isSuccess: false,
+          errorStatus:
+          'Даннный аккаунт уже существует пожалуйста введите другую',
+          isLoading: false,
+        ));
       }
+    } catch (e) {
+      emit(state.copyWith(errorStatus: e.toString()));
     }
   }
 }

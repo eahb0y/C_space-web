@@ -1,9 +1,12 @@
+import 'package:c_space_web/core/theme/colors/app_colors.dart';
+import 'package:c_space_web/core/widgets/cutom_button/custom_button.dart';
 import 'package:c_space_web/feature/login/page/widgets/custom_text_field.dart';
 import 'package:c_space_web/feature/register/presentation/bloc/auth_bloc.dart';
 import 'package:c_space_web/feature/register/presentation/mixin/auth_mixin.dart';
 import 'package:c_space_web/router/rout_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -24,7 +27,11 @@ class _RegistrationPageState extends State<RegistrationPage> with AuthMixin {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state.isSuccess) {
-          Navigator.pushNamedAndRemoveUntil(context, RoutName.main, (route) => false,);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            RoutName.main,
+            (route) => false,
+          );
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(
@@ -38,93 +45,122 @@ class _RegistrationPageState extends State<RegistrationPage> with AuthMixin {
               ),
             ),
             body: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        const SafeArea(
-                            child: SizedBox(
-                          height: 70,
-                        )),
-                        Stack(children: [
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Ink(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 70,
-                              ),
-                              child: Image.asset(
-                                'assets/images/c_space.png',
-                              ),
-                            ),
-                          ),
-                        ]),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        CustomTextField(
-                          controller: name,
-                          hintText: "Name",
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomTextField(
-                          controller: email,
-                          hintText: "Email",
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomTextField(
-                          controller: password,
-                          hintText: "Password",
-                          isVisible: state.isVisible,
-                          suffix: GestureDetector(
-                            onTap: () {
-                              context.read<AuthBloc>().add(
-                                  PasswordVisible(isVisible: state.isVisible));
-                            },
-                            child: state.isVisible
-                                ? const Icon(Icons.remove_red_eye)
-                                : const Icon(Icons.remove_red_eye_outlined),
-                          ),
-                        ),
-                      ],
-                    ),
+                  SvgPicture.asset(
+                    'assets/svg/ic_c_space_logo.svg',
+                    height: 67,
                   ),
-                  Text(state.error ?? '')
+                  Column(
+                    children: [
+                      CustomTextField(
+                        controller: name,
+                        hintText: "Name",
+                        onTextChange: (value) {
+                          context.read<AuthBloc>().add(
+                                EnviableSubmitButton(
+                                  email: email.text,
+                                  name: value,
+                                  password: password.text,
+                                ),
+                              );
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomTextField(
+                        controller: email,
+                        hintText: "Email",
+                        onTextChange: (value) {
+                          context.read<AuthBloc>().add(
+                                EnviableSubmitButton(
+                                  email: value,
+                                  name: name.text,
+                                  password: password.text,
+                                ),
+                              );
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomTextField(
+                        controller: password,
+                        hintText: "Password",
+                        isVisible: state.isVisible,
+                        suffix: GestureDetector(
+                          onTap: () {
+                            context.read<AuthBloc>().add(
+                                PasswordVisible(isVisible: state.isVisible));
+                          },
+                          child: state.isVisible
+                              ? const Icon(Icons.remove_red_eye)
+                              : const Icon(Icons.remove_red_eye_outlined),
+                        ),
+                        onTextChange: (value) {
+                          context.read<AuthBloc>().add(EnviableSubmitButton(
+                              email: email.text,
+                              name: name.text,
+                              password: value));
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      state.isSuccess
+                          ? const SizedBox()
+                          : Text(
+                              state.errorStatus ?? '',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.red,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textAlign: TextAlign.center,
+                            )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  )
                 ],
               ),
             ),
-            bottomNavigationBar: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                onPressed: () {
-                  context.read<AuthBloc>().add(
-                        SubmitButtonEvent(
-                            password: password.text,
-                            email: email.text,
-                            name: name.text),
-                      );
-                },
-                child: const Text("Войти"),
+            bottomNavigationBar: SafeArea(
+              minimum: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 50,
+              ),
+              child: CustomButton(
+                onPressed: state.enviable
+                    ? () {
+                        context.read<AuthBloc>().add(
+                              SubmitButtonEvent(
+                                  password: password.text,
+                                  email: email.text,
+                                  name: name.text),
+                            );
+                      }
+                    : null,
+                borderColor: state.enviable
+                    ? AppColors.buttonBorderSidedColor
+                    : Colors.white70,
+                color: AppColors.buttonBackgroundColor,
+                buttonText: 'Зарегистрироваться',
+                isLoading: state.isLoading,
               ),
             ),
           );
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

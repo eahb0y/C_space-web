@@ -7,15 +7,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 part 'total_pay_event.dart';
+
 part 'total_pay_state.dart';
 
 class TotalPayBloc extends Bloc<TotalPayEvent, TotalPayState> {
   String currentDay = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
-  TotalPayBloc() : super(const TotalPayState(isLoading: false)) {
+  TotalPayBloc()
+      : super(const TotalPayState(
+          isLoading: false,
+          isSelected: false,
+        )) {
     on<CalcTotalTime>(_calcTotalTime);
+    on<SelectPaymentType>(_selectValue);
+    on<OnPayEvent>(_payMethod);
+    on<CreditCardMethod>(_selectPaymentMethod);
   }
 
   Future<void> _calcTotalTime(
@@ -41,5 +50,22 @@ class TotalPayBloc extends Bloc<TotalPayEvent, TotalPayState> {
         isLoading: false,
       ),
     );
+  }
+
+  void _selectValue(SelectPaymentType event, Emitter<TotalPayState> emit) {
+    emit(state.copyWith(value: event.value));
+  }
+
+  Future<void> _payMethod(OnPayEvent event, Emitter<TotalPayState> emit) async {
+    if (await canLaunch(event.method)) {
+      await launch(event.method);
+    } else {
+      throw 'Could not launch ${event.method}';
+    }
+  }
+
+  void _selectPaymentMethod(
+      CreditCardMethod event, Emitter<TotalPayState> emit) {
+    emit(state.copyWith(paymentMethod: event.payMethod, isSelected: !event.select));
   }
 }
